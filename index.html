@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#13253c"><title>Hartford Zone Pay Lookup — v1.9.0</title>
+<meta name="theme-color" content="#13253c"><title>Hartford Zone Pay Lookup — v1.10.0</title>
 <style>
 :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1a2a3d;background:#f1f5f9}
 *{box-sizing:border-box}body{margin:0}button,input{font:inherit}button{cursor:pointer}
@@ -16,8 +16,8 @@ input:focus{border-color:#2778cb;box-shadow:0 0 0 3px #2778cb20}
 .result:hover,.town-button:hover{background:#eaf4ff}.hint{color:#62758a;font-size:13px}
 h2{font-size:21px;margin:0 0 12px}.map-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
 .map-actions{display:flex;gap:7px}.smallbtn{border:1px solid #cbd8e6;background:#f7fafc;padding:8px 12px;border-radius:9px;font-weight:750}
-.map-shell{background:#eaf1f8;border:1px solid #d6e1ed;border-radius:14px;overflow:hidden;position:relative;touch-action:pan-y;cursor:grab}
-.map-shell.dragging{cursor:grabbing}.map-shell.zoomed{touch-action:none}
+.map-shell{background:#eaf1f8;border:1px solid #d6e1ed;border-radius:14px;overflow:hidden;position:relative;touch-action:none;cursor:grab}
+.map-shell.dragging{cursor:grabbing}
 svg{display:block;width:100%;height:auto;max-height:650px;min-height:260px}
 .town-shape{stroke:#fff;stroke-width:1.4;vector-effect:non-scaling-stroke;cursor:pointer;transition:filter .1s}
 .town-shape:hover{filter:brightness(1.13);stroke:#18304c;stroke-width:2.5}
@@ -43,11 +43,11 @@ svg{display:block;width:100%;height:auto;max-height:650px;min-height:260px}
 footer{color:#667b91;text-align:center;font-size:12px;padding:4px 15px 25px}
 @media(max-width:650px){.panel{padding:15px}.zone-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.zone-card:last-child{grid-column:span 2}.map-shell svg{min-height:200px}.town-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style></head><body>
-<header><div class="wrap"><div class="eyebrow">Connecticut · Hartford Primary Zone</div><h1>Zone Pay Lookup</h1><p>Search a town, tap it on the map, or browse all five pay zones.</p><span class="version">VERSION 1.9.0 · OFFLINE MAP</span></div></header>
+<header><div class="wrap"><div class="eyebrow">Connecticut · Hartford Primary Zone</div><h1>Zone Pay Lookup</h1><p>Search a town, tap it on the map, or browse all five pay zones.</p><span class="version">VERSION 1.10.0 · OFFLINE MAP</span></div></header>
 <main class="wrap">
 <section class="panel search-panel"><label for="search">Find a Connecticut town</label><input id="search" type="search" placeholder="Start typing a town, e.g. Wethersfield" autocomplete="off" spellcheck="false"><div id="results" class="results" aria-live="polite"></div></section>
 <section class="panel" id="mapPanel"><div class="map-head"><h2>Interactive town map</h2><div class="map-actions"><button class="smallbtn" id="zoomIn" aria-label="Zoom in">＋</button><button class="smallbtn" id="zoomOut" aria-label="Zoom out">－</button><button class="smallbtn" id="resetMap">Reset</button></div></div>
-<p class="hint">Tap a town to see its rate. Drag to move the map, scroll or pinch to zoom.</p>
+<p class="hint">Tap a town to see its rate. At full view, swipe up or down to scroll the page; pinch with two fingers to zoom the map. When zoomed in, drag to move it.</p>
 <div id="mapShell" class="map-shell"><svg id="ctMap" viewBox="0 0 1000 729" role="img" aria-label="Interactive map of 169 Connecticut towns colored by zone"><g id="mapLayer">
 <path class="town-shape" data-town="Andover" data-zone="1" d="M721.17,214.4L715.61,206.43L707.49,194.65L693.65,196.88L678.8,195.74L681.41,211.43L681.79,215.37L682.21,217.63L672.38,219.14L676.89,227.81L681.98,237.96L685.16,243.15L697.36,241.33L704.44,240.07L707.3,238.16L709.45,233.11L713.24,226.33L714.72,224.02L721.17,214.4Z"><title>Andover — 1</title></path>
 <path class="town-shape" data-town="Ansonia" data-zone="3" d="M350.75,473.99L337.96,474.22L333.06,472.12L331.37,472.08L327.51,474.41L325.98,474.36L325.26,475.03L323.26,478.21L322.24,479.17L325.58,487.73L325.71,488.72L327.42,488.62L328.74,489.6L329.6,491.48L331.59,492.96L335.17,495.12L336.37,496.54L337.69,497.23L344.64,499.13L346.12,499.38L348.69,498.42L355,497.25L354.36,493.48L351.38,482.41L350.75,473.99Z"><title>Ansonia — 3</title></path>
@@ -260,8 +260,8 @@ function clientToMap(x,y){const r=svg.getBoundingClientRect();return {x:view.x+(
 $('zoomIn').onclick=()=>zoom(.7);$('zoomOut').onclick=()=>zoom(1.4);$('resetMap').onclick=()=>{view={...full};selected=null;filter=null;all=true;$('search').value='';$('mapDetail').hidden=true;renderSearch();highlight();renderZones();renderTowns();setView()};
 shell.addEventListener('wheel',e=>{if(view.w>=full.w-0.01 && e.deltaY>0)return;e.preventDefault();const p=clientToMap(e.clientX,e.clientY);zoom(e.deltaY>0?1.17:.85,p.x,p.y)},{passive:false});
 let pointers=new Map(),dragStart=null,pinchDistance=null,moved=false;
-shell.addEventListener('pointerdown',e=>{if(e.pointerType==='touch' && view.w>=full.w-0.01)return;shell.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=false;if(pointers.size===1){dragStart={x:e.clientX,y:e.clientY,view:{...view}}}if(pointers.size===2){pinchDistance=null}shell.classList.add('dragging')});
-shell.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;const prev=pointers.get(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===2){const ps=[...pointers.values()];const dist=Math.hypot(ps[0].x-ps[1].x,ps[0].y-ps[1].y);if(pinchDistance){const center=clientToMap((ps[0].x+ps[1].x)/2,(ps[0].y+ps[1].y)/2);zoom(pinchDistance/dist,center.x,center.y)}pinchDistance=dist;moved=true}else if(dragStart){const r=svg.getBoundingClientRect();const dx=e.clientX-dragStart.x,dy=e.clientY-dragStart.y;if(Math.hypot(dx,dy)>5)moved=true;view.x=dragStart.view.x-dx/r.width*view.w;view.y=dragStart.view.y-dy/r.height*view.h;clampView()}});
+shell.addEventListener('pointerdown',e=>{shell.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=false;if(pointers.size===1){dragStart={x:e.clientX,y:e.clientY,view:{...view}}}if(pointers.size===2){pinchDistance=null}shell.classList.add('dragging')});
+shell.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;const prev=pointers.get(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===1 && e.pointerType==='touch' && view.w>=full.w-0.01){const dy=e.clientY-prev.y;if(Math.abs(dy)>0){window.scrollBy(0,-dy);moved=true}return}if(pointers.size===2){const ps=[...pointers.values()];const dist=Math.hypot(ps[0].x-ps[1].x,ps[0].y-ps[1].y);if(pinchDistance){const center=clientToMap((ps[0].x+ps[1].x)/2,(ps[0].y+ps[1].y)/2);zoom(pinchDistance/dist,center.x,center.y)}pinchDistance=dist;moved=true}else if(dragStart){const r=svg.getBoundingClientRect();const dx=e.clientX-dragStart.x,dy=e.clientY-dragStart.y;if(Math.hypot(dx,dy)>5)moved=true;view.x=dragStart.view.x-dx/r.width*view.w;view.y=dragStart.view.y-dy/r.height*view.h;clampView()}});
 function endPointer(e){pointers.delete(e.pointerId);dragStart=null;pinchDistance=null;if(!pointers.size)shell.classList.remove('dragging')}
 shell.addEventListener('pointerup',endPointer);shell.addEventListener('pointercancel',endPointer);
 layer.addEventListener('click',e=>{if(moved){moved=false;return}const p=e.target.closest('path[data-town]');if(p)choose(lookup.get(p.dataset.town.toLowerCase()),false)});
@@ -278,5 +278,5 @@ $('allBtn').onclick=()=>{all=!all;filter=null;highlight();renderZones();renderTo
 Object.keys(RATES).forEach(z=>{const b=document.createElement('button');const sw=document.createElement('span');sw.className='swatch';sw.style.background=COLORS[z];b.append(sw,document.createTextNode(LABELS[z]+' · '+money(z)));b.onclick=()=>{zone=z;all=false;filter=z;highlight();renderZones();renderTowns();};$('legend').append(b)});
 renderZones();renderTowns();setView();
 const names=new Set(DATA.map(t=>t.town));const mapNames=new Set(shapes.keys());
-$('integrity').textContent=DATA.length===169&&names.size===169&&mapNames.size===169&&[...names].every(n=>mapNames.has(n))?'Version 1.9.0 · 169 towns and boundaries included · No internet required':'WARNING: Town data and map boundaries do not match';
+$('integrity').textContent=DATA.length===169&&names.size===169&&mapNames.size===169&&[...names].every(n=>mapNames.has(n))?'Version 1.10.0 · 169 towns and boundaries included · No internet required':'WARNING: Town data and map boundaries do not match';
 </script></body></html>
