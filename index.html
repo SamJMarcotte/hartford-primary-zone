@@ -1,119 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Zone Pay Lookup</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 50px;
-      background-color: #f4f4f9;
-      color: #333;
-    }
-    input {
-      width: 300px;
-      padding: 10px;
-      font-size: 16px;
-      border: 2px solid #007BFF;
-      border-radius: 5px;
-      outline: none;
-    }
-    input:focus {
-      border-color: #0056b3;
-    }
-    #result {
-      margin-top: 20px;
-      font-size: 20px;
-      font-weight: bold;
-    }
-    .zone-list {
-      text-align: left;
-      margin: 20px auto;
-      width: 70%;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    .zone {
-      padding: 15px;
-      border-radius: 8px;
-      background: white;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
-    }
-    .zone:hover {
-      transform: scale(1.02);
-    }
-    .zone h4 {
-      margin-bottom: 10px;
-      color: #007BFF;
-    }
-    .zone p {
-      white-space: pre-line;
-      color: #555;
-    }
-  </style>
-</head>
-<body>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101d30"><meta name="description" content="Look up Connecticut construction zone pay rates by town."><title>Hartford Zone Pay Lookup</title>
+<style>
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#172338;background:#f3f6fa;font-synthesis:none}*{box-sizing:border-box}body{margin:0}button,input{font:inherit}button{cursor:pointer}header{background:#101d30;color:white;padding:30px 20px 94px}.wrap{max-width:1020px;margin:auto}.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:#8fc5ff}h1{font-size:clamp(30px,5vw,48px);letter-spacing:-.045em;margin:12px 0 8px;line-height:1.08}header p{color:#b8c8dc;margin:0;max-width:550px;line-height:1.55}main{padding:0 20px 55px}.search-panel{position:relative;margin:-60px auto 24px;background:white;padding:24px;border-radius:20px;box-shadow:0 14px 40px #142d4d18;border:1px solid #e0e7ef}.search-panel label{display:block;font-size:14px;font-weight:800;margin-bottom:10px}.search-wrap{display:flex;gap:10px;align-items:center;border:2px solid #c9d6e5;border-radius:13px;padding:0 14px}.search-wrap:focus-within{border-color:#2879c9;box-shadow:0 0 0 3px #2879c91c}.search-icon{color:#71849c;font-size:23px}input{width:100%;height:56px;border:0;outline:0;font-size:19px;background:transparent;min-width:0}#clear{background:#e9eff6;border:0;border-radius:8px;padding:7px 11px;color:#52647a;display:none}.hint{color:#63758c;font-size:13px;margin:10px 0 0}.results{margin-top:16px}.match{width:100%;text-align:left;border:1px solid #e0e8f1;background:#fff;border-radius:11px;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:7px}.match:hover,.match:focus-visible{border-color:#2879c9;background:#f4f9ff}.match small{display:block;color:#718198;margin-top:3px}.zone-pill{font-size:12px;font-weight:800;border-radius:99px;padding:7px 10px;background:#e9f0fa;white-space:nowrap}.chosen{border-radius:15px;background:#eaf4ff;border:1px solid #b7d8fa;padding:20px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:15px}.chosen .name{font-size:clamp(22px,4vw,31px);font-weight:850;letter-spacing:-.03em}.chosen .caption{font-size:13px;color:#55708e;margin-bottom:4px}.chosen .price{font-size:clamp(30px,5vw,44px);font-weight:850;letter-spacing:-.04em;text-align:right}.chosen .price small{font-size:12px;display:block;font-weight:700;letter-spacing:0;color:#55708e}.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:26px 0 13px}.section-head h2{margin:0;font-size:23px;letter-spacing:-.035em}.section-head p{font-size:13px;color:#6a7a8d;margin:4px 0 0}.zones{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.zone-card{background:#fff;border:1px solid #dde6f0;border-radius:15px;padding:17px 12px;text-align:left;transition:.15s}.zone-card:hover,.zone-card:focus-visible{border-color:#2879c9;transform:translateY(-2px)}.zone-card.active{outline:2px solid #2879c9;background:#eaf4ff}.zone-card .label{font-size:13px;color:#64768e;font-weight:750}.zone-card .amount{font-size:30px;font-weight:850;margin:8px 0 5px;letter-spacing:-.04em}.zone-card .count{font-size:12px;color:#6b7c91}.directory{background:white;border:1px solid #dce6f0;border-radius:18px;overflow:hidden;margin-top:16px}.directory-top{padding:18px 21px;border-bottom:1px solid #e6ecf3;display:flex;align-items:center;justify-content:space-between;gap:10px}.directory-top h3{margin:0;font-size:18px}.directory-top button{border:1px solid #cad8e7;background:#fff;padding:9px 12px;border-radius:9px;color:#235f9a;font-weight:700}.towns{padding:17px 20px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 15px}.town{border:0;background:#f6f8fb;text-align:left;padding:10px 12px;border-radius:9px;color:#233b58;font-size:14px}.town:hover,.town:focus-visible{background:#e5f1ff;color:#14589c}.empty{color:#697b90;padding:14px 0}footer{margin-top:24px;font-size:12px;color:#748297;line-height:1.6}footer strong{color:#52677f}@media(max-width:720px){header{padding-top:26px}.zones{grid-template-columns:repeat(3,minmax(0,1fr))}.towns{grid-template-columns:repeat(2,minmax(0,1fr))}.search-panel{padding:18px}.zone-card .amount{font-size:26px}}@media(max-width:420px){.zones{grid-template-columns:repeat(2,minmax(0,1fr))}.chosen{padding:15px}.towns{padding:12px;gap:6px}.town{padding:10px 8px}}
 
-  <h2>Zone Pay Lookup</h2>
-  <input type="text" id="locationInput" placeholder="Enter a town..." list="towns" />
-  <datalist id="towns"></datalist>
-  <div id="result"></div>
-
-  <h3>Zones and Their Towns</h3>
-  <div id="zoneLists" class="zone-list"></div>
-
-  <script>
-    let zones = {};
-
-    fetch('zones.json')
-      .then(response => response.json())
-      .then(data => {
-        zones = data;
-        populatePage();
-      });
-
-    function populatePage() {
-      const datalist = document.getElementById("towns");
-      const zoneLists = document.getElementById("zoneLists");
-
-      // Populate town list for autocomplete
-      Object.values(zones).forEach(zone => {
-        zone.towns.forEach(town => {
-          let option = document.createElement("option");
-          option.value = town;
-          datalist.appendChild(option);
-        });
-      });
-
-      // Display all zones and their towns
-      Object.entries(zones).forEach(([zoneName, zoneData]) => {
-        let zoneDiv = document.createElement("div");
-        zoneDiv.classList.add("zone");
-        zoneDiv.innerHTML = `<h4>${zoneName} - ${zoneData.pay}</h4><p>${zoneData.towns.join(", ")}</p>`;
-        zoneLists.appendChild(zoneDiv);
-      });
-    }
-
-    document.getElementById("locationInput").addEventListener("change", function () {
-      const input = this.value;
-      let zoneName = "Unknown Zone";
-      let pay = "N/A";
-
-      for (let [zone, data] of Object.entries(zones)) {
-        if (data.towns.includes(input)) {
-          zoneName = zone;
-          pay = data.pay;
-          break;
-        }
-      }
-
-      document.getElementById("result").innerHTML = `<strong>${input}</strong> is in <strong>${zoneName}</strong> and worth <strong>${pay}</strong>`;
-    });
-  </script>
-</body>
-</html>
-
+.map-panel{margin:24px 0;background:white;border:1px solid #dce6f0;border-radius:18px;padding:18px;overflow:hidden}.map-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.map-head h2{margin:0;font-size:23px}.map-legend{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.legend-item{display:flex;align-items:center;gap:5px;font-size:12px;color:#45566c}.swatch{height:12px;width:12px;border-radius:3px;border:1px solid #0002}.map-viewport{position:relative;border-radius:12px;background:#eaf1f8;overflow:hidden;touch-action:pan-y}.map-viewport svg{display:block;width:100%;height:auto;max-height:630px}.map-town{stroke:#fff;stroke-width:1.2;vector-effect:non-scaling-stroke;cursor:pointer;transition:filter .12s,stroke .12s}.map-town:hover,.map-town:focus{stroke:#172338;stroke-width:2.4;filter:brightness(.91);outline:none}.map-town.selected{stroke:#101d30;stroke-width:3}.map-status{font-size:13px;color:#64768e;margin:10px 0}.map-tools{display:flex;gap:8px;align-items:center}.map-tools button{background:#eff4fa;border:1px solid #cad8e7;border-radius:9px;padding:8px 11px;color:#234e78;font-weight:700}.map-detail{background:#f2f7fd;border:1px solid #d3e4f5;padding:13px;border-radius:11px;display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px}.map-detail strong{font-size:19px}.map-detail span{font-weight:800;font-size:20px}.map-viewport svg text{pointer-events:none;font:600 9px system-ui;fill:#14263a;paint-order:stroke;stroke:#ffffffb5;stroke-width:2px}@media(max-width:650px){.map-panel{padding:13px}.map-viewport svg{min-height:280px}.map-head h2{font-size:21px}}
+</style></head><body>
+<header><div class="wrap"><div class="eyebrow">Connecticut • Construction</div><h1>Zone Pay Lookup</h1><p>Find a town, see its zone, and get the corresponding pay rate. Fast, simple, and built for your phone.</p></div></header>
+<main class="wrap"><section class="search-panel" aria-label="Town lookup"><label for="search">Search Connecticut towns</label><div class="search-wrap"><span class="search-icon" aria-hidden="true">⌕</span><input id="search" type="search" placeholder="e.g. Hartford, Waterbury, Suffield" autocomplete="off" spellcheck="false"><button id="clear" type="button" aria-label="Clear search">Clear</button></div><p class="hint" id="hint">Start typing to find any of Connecticut's 169 towns.</p><div id="results" class="results" aria-live="polite"></div></section>
+<section class="map-panel" aria-label="Interactive Connecticut map"><div class="map-head"><div><h2>Interactive town map</h2><p class="hint">Tap a town to see its zone and rate. Search above to highlight a town.</p></div><div class="map-tools"><button id="mapReset" type="button">Reset map</button></div></div><div class="map-legend" id="mapLegend"></div><div class="map-viewport" id="mapViewport"><div id="mapStatus" class="map-status" role="status">Loading Connecticut town boundaries…</div><svg id="ctMap" viewBox="0 0 900 580" role="img" aria-label="Clickable map of Connecticut towns by zone" style="display:none"></svg></div><div id="mapDetail" class="map-detail" hidden></div><p class="hint">Map geometry: Connecticut municipal boundaries. Colors indicate the zone assignments from your chart, not official government districts.</p></section><section aria-label="Zones"><div class="section-head"><div><h2>Browse by zone</h2><p>Select a zone to see every town in it.</p></div></div><div class="zones" id="zoneCards"></div><div class="directory" id="directory"><div class="directory-top"><h3 id="directoryTitle">Primary (P) towns</h3><button id="allBtn" type="button">Show all towns</button></div><div class="towns" id="towns"></div></div></section>
+<footer><strong>Reference:</strong> Connecticut construction zone chart transcribed and reviewed with the user. Rates shown are zone amounts from the supplied chart, not a live wage schedule. Verify with the applicable agreement before relying on them for payroll. <span id="integrity"></span></footer></main>
+<script>
+const DATA=[{"town":"Andover","zone":"1"},{"town":"Ansonia","zone":"3"},{"town":"Ashford","zone":"2"},{"town":"Avon","zone":"1"},{"town":"Barkhamsted","zone":"2"},{"town":"Beacon Falls","zone":"2"},{"town":"Berlin","zone":"1"},{"town":"Bethany","zone":"2"},{"town":"Bethel","zone":"3"},{"town":"Bethlehem","zone":"2"},{"town":"Bloomfield","zone":"P"},{"town":"Bolton","zone":"1"},{"town":"Bozrah","zone":"2"},{"town":"Branford","zone":"3"},{"town":"Bridgeport","zone":"3"},{"town":"Bridgewater","zone":"3"},{"town":"Bristol","zone":"1"},{"town":"Brookfield","zone":"3"},{"town":"Brooklyn","zone":"3"},{"town":"Burlington","zone":"1"},{"town":"Canaan","zone":"3"},{"town":"Canterbury","zone":"3"},{"town":"Canton","zone":"1"},{"town":"Chaplin","zone":"2"},{"town":"Cheshire","zone":"2"},{"town":"Chester","zone":"2"},{"town":"Clinton","zone":"3"},{"town":"Colchester","zone":"2"},{"town":"Colebrook","zone":"2"},{"town":"Columbia","zone":"1"},{"town":"Cornwall","zone":"3"},{"town":"Coventry","zone":"1"},{"town":"Cromwell","zone":"1"},{"town":"Danbury","zone":"3"},{"town":"Darien","zone":"4"},{"town":"Deep River","zone":"2"},{"town":"Derby","zone":"3"},{"town":"Durham","zone":"2"},{"town":"East Granby","zone":"1"},{"town":"East Haddam","zone":"2"},{"town":"East Hampton","zone":"2"},{"town":"East Hartford","zone":"P"},{"town":"East Haven","zone":"3"},{"town":"East Lyme","zone":"3"},{"town":"East Windsor","zone":"P"},{"town":"Eastford","zone":"3"},{"town":"Easton","zone":"3"},{"town":"Ellington","zone":"1"},{"town":"Enfield","zone":"1"},{"town":"Essex","zone":"2"},{"town":"Fairfield","zone":"3"},{"town":"Farmington","zone":"P"},{"town":"Franklin","zone":"2"},{"town":"Glastonbury","zone":"P"},{"town":"Goshen","zone":"2"},{"town":"Granby","zone":"1"},{"town":"Greenwich","zone":"4"},{"town":"Griswold","zone":"3"},{"town":"Groton","zone":"3"},{"town":"Guilford","zone":"3"},{"town":"Haddam","zone":"2"},{"town":"Hamden","zone":"2"},{"town":"Hampton","zone":"2"},{"town":"Hartford","zone":"P"},{"town":"Hartland","zone":"2"},{"town":"Harwinton","zone":"2"},{"town":"Hebron","zone":"2"},{"town":"Kent","zone":"3"},{"town":"Killingly","zone":"3"},{"town":"Killingworth","zone":"2"},{"town":"Lebanon","zone":"2"},{"town":"Ledyard","zone":"3"},{"town":"Lisbon","zone":"3"},{"town":"Litchfield","zone":"2"},{"town":"Lyme","zone":"2"},{"town":"Madison","zone":"3"},{"town":"Manchester","zone":"P"},{"town":"Mansfield","zone":"1"},{"town":"Marlborough","zone":"2"},{"town":"Meriden","zone":"2"},{"town":"Middlebury","zone":"2"},{"town":"Middlefield","zone":"2"},{"town":"Middletown","zone":"1"},{"town":"Milford","zone":"3"},{"town":"Monroe","zone":"3"},{"town":"Montville","zone":"3"},{"town":"Morris","zone":"2"},{"town":"Naugatuck","zone":"2"},{"town":"New Britain","zone":"1"},{"town":"New Canaan","zone":"4"},{"town":"New Fairfield","zone":"3"},{"town":"New Hartford","zone":"2"},{"town":"New Haven","zone":"3"},{"town":"New London","zone":"3"},{"town":"New Milford","zone":"3"},{"town":"Newington","zone":"P"},{"town":"Newtown","zone":"3"},{"town":"Norfolk","zone":"2"},{"town":"North Branford","zone":"2"},{"town":"North Canaan","zone":"3"},{"town":"North Haven","zone":"2"},{"town":"North Stonington","zone":"3"},{"town":"Norwalk","zone":"4"},{"town":"Norwich","zone":"3"},{"town":"Old Lyme","zone":"3"},{"town":"Old Saybrook","zone":"3"},{"town":"Orange","zone":"3"},{"town":"Oxford","zone":"3"},{"town":"Plainfield","zone":"3"},{"town":"Plainville","zone":"1"},{"town":"Plymouth","zone":"2"},{"town":"Pomfret","zone":"3"},{"town":"Portland","zone":"1"},{"town":"Preston","zone":"3"},{"town":"Prospect","zone":"2"},{"town":"Putnam","zone":"3"},{"town":"Redding","zone":"3"},{"town":"Ridgefield","zone":"3"},{"town":"Rocky Hill","zone":"P"},{"town":"Roxbury","zone":"3"},{"town":"Salem","zone":"2"},{"town":"Salisbury","zone":"3"},{"town":"Scotland","zone":"2"},{"town":"Seymour","zone":"3"},{"town":"Sharon","zone":"3"},{"town":"Shelton","zone":"3"},{"town":"Sherman","zone":"3"},{"town":"Simsbury","zone":"1"},{"town":"Somers","zone":"2"},{"town":"South Windsor","zone":"P"},{"town":"Southbury","zone":"3"},{"town":"Southington","zone":"1"},{"town":"Sprague","zone":"2"},{"town":"Stafford","zone":"2"},{"town":"Stamford","zone":"4"},{"town":"Sterling","zone":"3"},{"town":"Stonington","zone":"3"},{"town":"Stratford","zone":"3"},{"town":"Suffield","zone":"1"},{"town":"Thomaston","zone":"2"},{"town":"Thompson","zone":"3"},{"town":"Tolland","zone":"1"},{"town":"Torrington","zone":"2"},{"town":"Trumbull","zone":"3"},{"town":"Union","zone":"2"},{"town":"Vernon","zone":"1"},{"town":"Voluntown","zone":"3"},{"town":"Wallingford","zone":"2"},{"town":"Warren","zone":"2"},{"town":"Washington","zone":"3"},{"town":"Waterbury","zone":"2"},{"town":"Waterford","zone":"3"},{"town":"Watertown","zone":"2"},{"town":"West Hartford","zone":"P"},{"town":"West Haven","zone":"3"},{"town":"Westbrook","zone":"3"},{"town":"Weston","zone":"3"},{"town":"Westport","zone":"4"},{"town":"Wethersfield","zone":"P"},{"town":"Willington","zone":"2"},{"town":"Wilton","zone":"4"},{"town":"Winchester","zone":"2"},{"town":"Windham","zone":"2"},{"town":"Windsor","zone":"P"},{"town":"Windsor Locks","zone":"1"},{"town":"Wolcott","zone":"2"},{"town":"Woodbridge","zone":"3"},{"town":"Woodbury","zone":"2"},{"town":"Woodstock","zone":"3"}];
+const RATES={P:0,1:8,2:14,3:18,4:25};
+const LABELS={P:'Primary',1:'Zone 1',2:'Zone 2',3:'Zone 3',4:'Zone 4'};
+const $=id=>document.getElementById(id);
+const COLORS={P:'#68b89b',1:'#a4c9ed',2:'#f1d47e',3:'#eea87e',4:'#d6a3d9'};
+const lookup=new Map(DATA.map(t=>[t.town.toLowerCase(),t]));
+let currentMapTown=null;
+Object.keys(RATES).forEach(z=>{const d=document.createElement('div');d.className='legend-item';const sw=document.createElement('span');sw.className='swatch';sw.style.background=COLORS[z];d.append(sw,document.createTextNode(LABELS[z]+' '+money(z)));$('mapLegend').append(d)});
+function highlightMap(t){currentMapTown=t.town;document.querySelectorAll('.map-town').forEach(el=>el.classList.toggle('selected',el.dataset.town===t.town));const d=$('mapDetail');d.hidden=false;d.replaceChildren();const label=document.createElement('strong');label.textContent=t.town+' · '+LABELS[t.zone];const amt=document.createElement('span');amt.textContent=money(t.zone);d.append(label,amt);const shape=[...document.querySelectorAll('.map-town')].find(el=>el.dataset.town===t.town);if(shape){shape.parentNode.append(shape);}}
+function resetMap(){$('mapDetail').hidden=true;currentMapTown=null;document.querySelectorAll('.map-town').forEach(el=>el.classList.remove('selected'))}
+$('mapReset').addEventListener('click',resetMap);
+async function loadMap(){
+ const urls=['https://raw.githubusercontent.com/HandsOnDataViz/ct-boundaries/master/ct-towns-2022-simple-datactgov.geojson','https://raw.githubusercontent.com/HandsOnDataViz/ct-boundaries/main/ct-towns-2022-simple-datactgov.geojson'];
+ let geo=null;for(const url of urls){try{const r=await fetch(url);if(!r.ok)continue;const g=await r.json();if(g.features?.length>=169){geo=g;break}}catch(e){}}
+ if(!geo){$('mapStatus').textContent='Map boundaries could not load. The town search and zone lists still work. Check your internet connection and refresh.';return}
+ const features=geo.features;function getName(f){const p=f.properties||{};const v=Object.entries(p).find(([k,v])=>/^(town|name|municipality|town_name|townname)$/i.test(k)&&typeof v==='string');return v?.[1]?.trim()||''}
+ function points(g){if(g.type==='Polygon')return g.coordinates.flat(1);if(g.type==='MultiPolygon')return g.coordinates.flat(2);return []}
+ const all=features.flatMap(f=>points(f.geometry));const xs=all.map(p=>p[0]),ys=all.map(p=>p[1]);const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);const width=900,height=580,pad=12;const scale=Math.min((width-pad*2)/(maxX-minX),(height-pad*2)/(maxY-minY));const dx=(width-(maxX-minX)*scale)/2,dy=(height-(maxY-minY)*scale)/2;
+ const xy=p=>[(p[0]-minX)*scale+dx,(maxY-p[1])*scale+dy];const svg=$('ctMap');const ns='http://www.w3.org/2000/svg';let rendered=0;
+ for(const f of features){let name=getName(f);let t=lookup.get(name.toLowerCase());if(!t)continue;const g=f.geometry;const polys=g.type==='Polygon'?[g.coordinates]:g.type==='MultiPolygon'?g.coordinates:[];let d='';for(const poly of polys)for(const ring of poly){d+=ring.map((p,i)=>{const [x,y]=xy(p);return (i?'L':'M')+x.toFixed(2)+' '+y.toFixed(2)}).join(' ')+'Z'}const path=document.createElementNS(ns,'path');path.setAttribute('d',d);path.setAttribute('fill',COLORS[t.zone]);path.setAttribute('class','map-town');path.setAttribute('tabindex','0');path.setAttribute('role','button');path.setAttribute('aria-label',t.town+', '+LABELS[t.zone]+', '+money(t.zone));path.dataset.town=t.town;path.addEventListener('click',()=>choose(t));path.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();choose(t)}});const title=document.createElementNS(ns,'title');title.textContent=t.town+' — '+LABELS[t.zone]+' — '+money(t.zone);path.append(title);svg.append(path);rendered++}
+ if(rendered<160){$('mapStatus').textContent='Map data could not be matched to the town list. Search remains available.';return}svg.style.display='block';$('mapStatus').textContent='Tap any town on the map ('+rendered+' mapped).';if(currentMapTown){const t=lookup.get(currentMapTown.toLowerCase());if(t)highlightMap(t)}
+}
+loadMap();
+let selectedZone='P';let showAll=false;
+const money=z=>'$'+RATES[z].toFixed(2);
+function choose(t){$('search').value=t.town;$('clear').style.display='block';$('hint').textContent='Selected town';$('results').replaceChildren();const card=document.createElement('div');card.className='chosen';const left=document.createElement('div');const cap=document.createElement('div');cap.className='caption';cap.textContent=LABELS[t.zone];const name=document.createElement('div');name.className='name';name.textContent=t.town;left.append(cap,name);const price=document.createElement('div');price.className='price';price.textContent=money(t.zone);const small=document.createElement('small');small.textContent='ZONE RATE';price.append(small);card.append(left,price);$('results').append(card);selectedZone=t.zone;showAll=false;renderZones();renderTowns();highlightMap(t);}
+function renderSearch(){const q=$('search').value.trim().toLowerCase();$('clear').style.display=q?'block':'none';$('results').replaceChildren();$('hint').textContent=q?'Tap a matching town to view its rate.':"Start typing to find any of Connecticut's 169 towns.";if(!q)return;const matches=DATA.filter(t=>t.town.toLowerCase().includes(q));if(!matches.length){const e=document.createElement('p');e.className='empty';e.textContent='No matching Connecticut towns found.';$('results').append(e);return;}if(matches.length===1&&matches[0].town.toLowerCase()===q){choose(matches[0]);return;}matches.slice(0,12).forEach(t=>{const b=document.createElement('button');b.type='button';b.className='match';const l=document.createElement('span');l.textContent=t.town;const p=document.createElement('span');p.className='zone-pill';p.textContent=LABELS[t.zone]+' · '+money(t.zone);b.append(l,p);b.addEventListener('click',()=>choose(t));$('results').append(b)});if(matches.length>12){const p=document.createElement('p');p.className='hint';p.textContent='Keep typing to narrow '+matches.length+' matches.';$('results').append(p)}}
+function renderZones(){$('zoneCards').replaceChildren();Object.keys(RATES).forEach(z=>{const b=document.createElement('button');b.type='button';b.className='zone-card'+(!showAll&&selectedZone===z?' active':'');b.setAttribute('aria-pressed',String(!showAll&&selectedZone===z));const label=document.createElement('div');label.className='label';label.textContent=LABELS[z];const amount=document.createElement('div');amount.className='amount';amount.textContent=money(z);const count=document.createElement('div');count.className='count';count.textContent=DATA.filter(t=>t.zone===z).length+' towns';b.append(label,amount,count);b.addEventListener('click',()=>{selectedZone=z;showAll=false;renderZones();renderTowns();});$('zoneCards').append(b)})}
+function renderTowns(){const arr=showAll?DATA:DATA.filter(t=>t.zone===selectedZone);$('directoryTitle').textContent=showAll?'All 169 Connecticut towns':LABELS[selectedZone]+' towns ('+arr.length+')';$('allBtn').textContent=showAll?'Show selected zone':'Show all towns';$('towns').replaceChildren();arr.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='town';b.textContent=showAll?t.town+' · '+t.zone:t.town;b.addEventListener('click',()=>{choose(t);window.scrollTo({top:0,behavior:'smooth'});$('search').focus({preventScroll:true})});$('towns').append(b)})}
+$('search').addEventListener('input',renderSearch);$('clear').addEventListener('click',()=>{$('search').value='';renderSearch();$('search').focus()});$('allBtn').addEventListener('click',()=>{showAll=!showAll;renderZones();renderTowns()});renderZones();renderTowns();const unique=new Set(DATA.map(x=>x.town));$('integrity').textContent=DATA.length===169&&unique.size===169?'169 unique towns loaded.':'Warning: town data needs review.';
+</script></body></html>
